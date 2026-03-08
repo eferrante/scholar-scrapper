@@ -101,42 +101,39 @@ def get_publications(profile_ids, progress_callback=None):
 
 
 def build_html(publications):
-    rows = ""
-    for pub in publications:
-        link = f'<a href="{pub["url"]}" target="_blank">Link</a>' if pub.get("url") else ""
-        rows += f"""
-            <tr>
-                <td>{pub["title"]}</td>
-                <td>{pub["year"]}</td>
-                <td>{pub["journal"]}</td>
-                <td>{pub["authors"]}</td>
-                <td>{pub["citations"]}</td>
-                <td>{link}</td>
-            </tr>"""
+    from itertools import groupby
+
+    body = ""
+    for year, group in groupby(publications, key=lambda x: x["year"]):
+        body += f"<h3>{year}</h3>\n"
+        for pub in group:
+            authors = (pub.get("authors") or "").strip()
+            title = pub.get("title", "")
+            journal = (pub.get("journal") or "").strip()
+            url = pub.get("url") or ""
+
+            title_html = (
+                f'<a href="{url}" target="_blank"><b>{title}</b></a>'
+                if url else f"<b>{title}</b>"
+            )
+            journal_part = f" {journal}" if journal else ""
+            entry = f'{authors}. &ldquo;{title_html}&rdquo;{journal_part}, ({year}).'
+            body += f"<p>{entry}</p>\n"
 
     return f"""<html>
 <head>
     <title>Combined Publications List</title>
     <style>
-        body {{ font-family: Arial, sans-serif; }}
-        table {{ width: 100%; border-collapse: collapse; }}
-        th, td {{ padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }}
-        th {{ background-color: #f2f2f2; }}
-        tr:hover {{ background-color: #f5f5f5; }}
+        body {{ font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; line-height: 1.6; }}
+        h3 {{ margin-top: 2em; border-bottom: 1px solid #ccc; padding-bottom: 4px; }}
+        p {{ margin: 0.5em 0; }}
+        a {{ color: #1a0dab; text-decoration: none; }}
+        a:hover {{ text-decoration: underline; }}
     </style>
 </head>
 <body>
     <h2>Combined Publications List</h2>
-    <table>
-        <tr>
-            <th>Title</th>
-            <th>Year</th>
-            <th>Journal/Conference</th>
-            <th>Authors</th>
-            <th>Citations</th>
-            <th>Link</th>
-        </tr>{rows}
-    </table>
+    {body}
 </body>
 </html>"""
 
