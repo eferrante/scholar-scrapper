@@ -1,0 +1,4 @@
+streamlit
+scholarly
+requests
+pandas
