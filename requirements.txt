@@ -2,3 +2,4 @@ streamlit
 scholarly
 requests
 pandas
+httpx<0.28
