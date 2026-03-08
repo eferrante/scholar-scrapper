@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-from scholarScreapperScript import (
+from scholarScrapperScript import (
     setup_proxy,
     get_publications,
     build_html,
