@@ -7,7 +7,7 @@ OPENALEX_API = "https://api.openalex.org/works"
 # Add your email for OpenAlex "polite pool" (higher rate limits)
 OPENALEX_MAILTO = "eferrante@sinc.unl.edu.ar"
 
-profile_ids = ["ArqlkTUAAAAJ", "s3CmNoEAAAAJ", "nvVcDr4AAAAJ"]
+profile_ids = ["ArqlkTUAAAAJ", "s3CmNoEAAAAJ", "nvVcDr4AAAAJ", "o5lqAukAAAAJ", "KqoUj1AAAAAJ","E6U3rCYAAAAJ"]
 
 
 def setup_proxy():
@@ -94,7 +94,7 @@ def get_publications(profile_ids, progress_callback=None):
         for future in as_completed(future_to_idx):
             i = future_to_idx[future]
             authors = future.result()
-            all_publications[i]["authors"] = authors or "N/A"
+            all_publications[i]["authors"] = authors or " "
 
     all_publications.sort(key=lambda x: x["year"], reverse=True)
     return all_publications

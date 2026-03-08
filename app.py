@@ -5,6 +5,7 @@ from scholarScreapperScript import (
     setup_proxy,
     get_publications,
     build_html,
+    profile_ids as default_profile_ids,
 )
 
 st.title("Scholar Publication Scraper")
@@ -21,7 +22,7 @@ init_proxy()
 st.subheader("Author Profile IDs")
 ids_input = st.text_area(
     "One Google Scholar profile ID per line",
-    value="ArqlkTUAAAAJ\ns3CmNoEAAAAJ\nnvVcDr4AAAAJ",
+    value="\n".join(default_profile_ids),
     height=120,
 )
 
